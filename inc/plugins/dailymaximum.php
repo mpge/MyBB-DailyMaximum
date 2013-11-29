@@ -102,7 +102,8 @@ function dailymaximum_deactivate()
 
 function dailymaximum_start()
 {
-    global $db, $dailymaximum, $mybb;
+    global $db, $dailymaximum, $mybb, $lang;
+    $lang->load("newreply");
     if ($mybb->settings['dailymaximum_1'] == 1) {
         // Bind settings to variables
         $dailymaximum_2              = $mybb->settings['dailymaximum_2'];
