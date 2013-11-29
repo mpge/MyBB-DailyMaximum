@@ -12,6 +12,7 @@ if (!defined("IN_MYBB")) {
 
 // Hooks
 $plugins->add_hook('newreply_do_newreply_start', 'dailymaximum_start');
+$plugins->add_hook('newthread_do_newthread_start', 'dailymaximum_start');
 // Continue:
 
 function dailymaximum_info()
@@ -104,6 +105,7 @@ function dailymaximum_start()
 {
     global $db, $dailymaximum, $mybb, $lang;
     $lang->load("newreply");
+    $lang->load("newthread");
     if ($mybb->settings['dailymaximum_1'] == 1) {
         // Bind settings to variables
         $dailymaximum_2              = $mybb->settings['dailymaximum_2'];
