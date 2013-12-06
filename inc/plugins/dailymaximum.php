@@ -23,7 +23,7 @@ function dailymaximum_info()
         "website" => "http://pluginbin.com/author/ziloidev",
         "author" => "Ziloi Plugin Development",
         "authorsite" => "http://www.pluginbin.com/author/ziloi",
-        "version" => "1.0BETA",
+        "version" => "1.2B",
         "guid" => "",
         "compatibility" => "*"
     );
