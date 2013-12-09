@@ -153,6 +153,7 @@ function dailymaximum_start()
         if (count($dailymaximum_settings_array) > 0) {
             // not empty
             if (array_key_exists($thread['fid'], $dailymaximum_settings_array)) {
+                $fid = $thread['fid'];
                 // Posting in Restricted forum.. Check how many posts in the last daycount they have posted, and make sure its below the postamount:
                 $dailymaximum_daycut     = ((TIME_NOW - 60 * 60 * 24) * $dailymaximum_settings_array[$thread['fid']]["daycount"]);
                 $dailymaximum_post_count = null;
@@ -182,12 +183,12 @@ function dailymaximum_start()
                 }
                 elseif($currentPage == "newthread.php" && $mybb->settings['dailymaximum_4'] == 2 || $mybb->settings['dailymaximum_4'] == 3)
                 {
-                    $dailymaximum_query_1      = $db->simple_select("threads", "COUNT(*) AS posts_from_daycount_1", "uid='{$mybb->user['uid']}' AND visible='1' AND dateline>{$dailymaximum_daycut}");
+                    $dailymaximum_query_1      = $db->simple_select("threads", "COUNT(*) AS posts_from_daycount_1", "uid='{$mybb->user['uid']}' AND visible='1' AND dateline>{$dailymaximum_daycut} AND fid='{$fid}'");
                     $dailymaximum_post_count_1 = $db->fetch_field($dailymaximum_query_1, "posts_from_daycount_1");
                     $dailymaximum_post_count_2 = 0; // default
                     if($mybb->settings['dailymaximum_4'] == 3)
                     {
-                        $dailymaximum_query_2 = $db->simple_select("posts", "COUNT(*) AS posts_from_daycount_2", "uid='{$mybb->user['uid']}' AND visible='1' AND dateline>{$dailymaximum_daycut}");
+                        $dailymaximum_query_2 = $db->simple_select("posts", "COUNT(*) AS posts_from_daycount_2", "uid='{$mybb->user['uid']}' AND visible='1' AND dateline>{$dailymaximum_daycut} AND fid='{$fid}'");
                         $dailymaximum_post_count_2 = $db->fetch_field($dailymaximum_query_2, "posts_from_daycount_2");
                     }
                     $dailymaximum_post_count = $dailymaximum_post_count_1 + $dailymaximum_post_count_2;
