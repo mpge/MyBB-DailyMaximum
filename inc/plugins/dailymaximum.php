@@ -160,7 +160,7 @@ function dailymaximum_start()
                 $dailymaximum_daycut     = ((TIME_NOW - 60 * 60 * 24) * $dailymaximum_settings_array[$thread['fid']]["daycount"]);
                 $dailymaximum_post_count = null;
                 $currentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
-
+                // Final IF Statement Logic
                 if($currentPage == "newreply.php" && $mybb->settings['dailymaximum_4'] == 1 || $mybb->settings['dailymaximum_4'] == 3)
                 {
                     $dailymaximum_query_1      = $db->simple_select("posts", "COUNT(*) AS posts_from_daycount_1", "uid='{$mybb->user['uid']}' AND visible='1' AND dateline>{$dailymaximum_daycut}");
@@ -172,18 +172,8 @@ function dailymaximum_start()
                         $dailymaximum_post_count_2 = $db->fetch_field($dailymaximum_query_2, "posts_from_daycount_2");
                     }
                     $dailymaximum_post_count = $dailymaximum_post_count_1 + $dailymaximum_post_count_2;
-                    if ($dailymaximum_post_count >= $dailymaximum_settings_array[$thread['fid']]["postamount"]) {
-                        if (isset($dailymaximum_3) && !empty($dailymaximum_3)) {
-                            // Redirect URL is set
-                            header('Location: ' . $dailymaximum_3);
-                        } else {
-                            // return built in maxposts error page
-                            $lang->error_maxposts = $lang->sprintf($lang->error_maxposts, $dailymaximum_settings_array[$thread['fid']]["postamount"]);
-                            error($lang->error_maxposts);
-                        }
-                    }
                 }
-                elseif($currentPage == "newthread.php" && $mybb->settings['dailymaximum_4'] == 2 || $mybb->settings['dailymaximum_4'] == 3)
+                if($currentPage == "newthread.php" && $mybb->settings['dailymaximum_4'] == 2 || $mybb->settings['dailymaximum_4'] == 3)
                 {
                     $dailymaximum_query_1      = $db->simple_select("threads", "COUNT(*) AS posts_from_daycount_1", "uid='{$mybb->user['uid']}' AND visible='1' AND dateline>{$dailymaximum_daycut} AND fid='{$fid}'");
                     $dailymaximum_post_count_1 = $db->fetch_field($dailymaximum_query_1, "posts_from_daycount_1");
@@ -194,15 +184,16 @@ function dailymaximum_start()
                         $dailymaximum_post_count_2 = $db->fetch_field($dailymaximum_query_2, "posts_from_daycount_2");
                     }
                     $dailymaximum_post_count = $dailymaximum_post_count_1 + $dailymaximum_post_count_2;
-                    if ($dailymaximum_post_count >= $dailymaximum_settings_array[$thread['fid']]["postamount"]) {
-                        if (isset($dailymaximum_3) && !empty($dailymaximum_3)) {
-                            // Redirect URL is set
-                            header('Location: ' . $dailymaximum_3);
-                        } else {
-                            // return built in maxposts error page
-                            $lang->error_maxposts = $lang->sprintf($lang->error_maxposts, $dailymaximum_settings_array[$thread['fid']]["postamount"]);
-                            error($lang->error_maxposts);
-                        }
+                }
+                // Final if (Last check and print error, or redirect!)
+                if ($dailymaximum_post_count >= $dailymaximum_settings_array[$thread['fid']]["postamount"]) {
+                    if (isset($dailymaximum_3) && !empty($dailymaximum_3)) {
+                        // Redirect URL is set
+                        header('Location: ' . $dailymaximum_3);
+                    } else {
+                        // return built in maxposts error page
+                        $lang->error_maxposts = $lang->sprintf($lang->error_maxposts, $dailymaximum_settings_array[$thread['fid']]["postamount"]);
+                        error($lang->error_maxposts);
                     }
                 }
             }
